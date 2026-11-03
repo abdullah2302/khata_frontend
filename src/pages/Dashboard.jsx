@@ -1,0 +1,60 @@
+import { useEffect, useState } from 'react';
+import {
+  getSummary, getMonthlyEarnings, getPendingByClient, getUpcoming,
+  getBilledVsPaid, getTopClients, getProjectsByStatus
+} from '../api/statsApi';
+import { useAuth } from '../context/AuthContext';
+import PageHeader from '../components/ui/PageHeader';
+import Alert from '../components/ui/Alert';
+import SummaryLines from '../components/dashboard/SummaryLines';
+import BilledVsPaid from '../components/dashboard/BilledVsPaid';
+import StatusDonut from '../components/dashboard/StatusDonut';
+import TrendChart from '../components/dashboard/TrendChart';
+import OwingList from '../components/dashboard/OwingList';
+import DueSoon from '../components/dashboard/DueSoon';
+import TopClients from '../components/reports/TopClients';
+import ProjectStatusBars from '../components/reports/ProjectStatusBars';
+
+export default function Dashboard() {
+  const { user } = useAuth();
+  const year = new Date().getFullYear();
+  const [d, setD] = useState({ summary: [], earnings: [], billed: [], owing: [], upcoming: [], top: [], projects: [] });
+  const [error, setError] = useState('');
+
+  useEffect(() => {
+    Promise.all([
+      getSummary(), getMonthlyEarnings(year), getBilledVsPaid(year), getPendingByClient(),
+      getUpcoming(), getTopClients(), getProjectsByStatus()
+    ])
+      .then(([summary, earnings, billed, owing, upcoming, top, projects]) =>
+        setD({ summary, earnings: earnings.data, billed: billed.data, owing, upcoming, top, projects })
+      )
+      .catch(() => setError('Could not load your ledger. Check that the server is running.'));
+  }, [year]);
+
+  return (
+    <>
+      <PageHeader title={`Salam, ${user.name.split(' ')[0]}`} subtitle="Here is where your money stands." />
+      {error && <Alert>{error}</Alert>}
+
+      <SummaryLines summary={d.summary} />
+
+      <div className="grid gap-10 md:grid-cols-[2fr_1fr]">
+        <BilledVsPaid data={d.billed} year={year} />
+        <StatusDonut summary={d.summary} />
+      </div>
+
+      <div className="mt-10 grid gap-10 md:grid-cols-2">
+        <TrendChart data={d.earnings} year={year} />
+        <OwingList items={d.owing} />
+      </div>
+
+      <div className="mt-10 grid gap-10 md:grid-cols-2">
+        <TopClients items={d.top} />
+        <ProjectStatusBars items={d.projects} />
+      </div>
+
+      <DueSoon items={d.upcoming} />
+    </>
+  );
+}

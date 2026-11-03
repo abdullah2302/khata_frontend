@@ -1,0 +1,80 @@
+@import 'tailwindcss';
+
+/* Default theme: Notebook (navy ink, blue ruled lines, red margin). */
+@theme {
+  --font-display: 'Bricolage Grotesque', sans-serif;
+  --font-sans: 'Figtree', system-ui, sans-serif;
+  --font-urdu: 'Noto Naskh Arabic', serif;
+
+  --color-ink: #14213d;
+  --color-ink-2: #22345f;
+  --color-paper: #fcfbf7;
+  --color-desk: #e4e9f3;
+  --color-rule: #c3cfe6;
+  --color-margin: #d9453c;
+  --color-gold: #f0a500;
+  --color-muted: #566280;
+  --color-body: #141c33;
+
+  --animate-grow: grow 0.7s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  --animate-growx: growx 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  --animate-rise: rise 0.55s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  --animate-pop: pop 0.22s ease-out both;
+  --animate-fade: fade 0.2s ease-out both;
+  --animate-slide-in: slide-in 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) both;
+  --animate-stamp: stamp 0.5s cubic-bezier(0.2, 1.4, 0.4, 1) 0.3s both;
+  --animate-draw: draw 1.4s ease-out both;
+
+  @keyframes grow { from { transform: scaleY(0); } }
+  @keyframes growx { from { transform: scaleX(0); } }
+  @keyframes rise { from { opacity: 0; transform: translateY(14px); } }
+  @keyframes pop { from { opacity: 0; transform: scale(0.96); } }
+  @keyframes fade { from { opacity: 0; } }
+  @keyframes slide-in { from { opacity: 0; transform: translateX(24px); } }
+  @keyframes stamp { from { opacity: 0; transform: scale(2.2) rotate(-18deg); } }
+  @keyframes draw { from { stroke-dashoffset: 1; } }
+}
+
+/* Other themes only override the colour variables. */
+:root[data-theme='ledger'] {
+  --color-ink: #123b34;
+  --color-ink-2: #1c5248;
+  --color-paper: #f6f8f0;
+  --color-desk: #dce5d6;
+  --color-rule: #c6d3c2;
+  --color-margin: #c23b2e;
+  --color-gold: #e0a100;
+  --color-muted: #5b6f66;
+  --color-body: #18302a;
+}
+
+:root[data-theme='plum'] {
+  --color-ink: #2d1b4e;
+  --color-ink-2: #45306d;
+  --color-paper: #fbf8fd;
+  --color-desk: #e9e1f2;
+  --color-rule: #d2c5e3;
+  --color-margin: #e0457b;
+  --color-gold: #f2b01e;
+  --color-muted: #6a5d80;
+  --color-body: #231537;
+}
+
+@layer base {
+  body {
+    @apply bg-desk font-sans text-body tabular-nums;
+  }
+  :focus-visible {
+    @apply outline-3 outline-offset-2 outline-gold;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, ::before, ::after {
+      animation-duration: 0.01ms !important;
+      animation-delay: 0ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+  @media print {
+    body { background: white; }
+  }
+}

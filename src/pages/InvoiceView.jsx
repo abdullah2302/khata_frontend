@@ -1,0 +1,124 @@
+import { useCallback, useEffect, useState } from 'react';
+import { Link, useParams } from 'react-router-dom';
+import { getInvoice, markInvoicePaid } from '../api/invoiceApi';
+import { useAuth } from '../context/AuthContext';
+import { useToast } from '../context/ToastContext';
+import { errorMessage, fmtDate, money } from '../utils/format';
+import { reminderMessage, whatsappLink } from '../utils/reminder';
+import Button from '../components/ui/Button';
+import LinkButton from '../components/ui/LinkButton';
+import StatusBadge from '../components/ui/StatusBadge';
+import TableSkeleton from '../components/ui/TableSkeleton';
+import Alert from '../components/ui/Alert';
+
+const label = 'text-sm text-muted';
+
+export default function InvoiceView() {
+  const { id } = useParams();
+  const { user } = useAuth();
+  const toast = useToast();
+  const [inv, setInv] = useState(null);
+  const [error, setError] = useState('');
+
+  const load = useCallback(() => getInvoice(id).then(setInv).catch((e) => setError(errorMessage(e))), [id]);
+  useEffect(() => { load(); }, [load]);
+
+  const markPaid = async () => {
+    try { await markInvoicePaid(id); toast.success('Invoice marked as paid'); load(); }
+    catch (e) { toast.error(errorMessage(e)); }
+  };
+
+  const back = (
+    <Link to="/invoices" className="text-muted hover:text-ink">
+      <i className="fa-solid fa-arrow-left mr-1.5" />
+      Invoices
+    </Link>
+  );
+
+  if (error) return <><div className="mb-4">{back}</div><Alert>{error}</Alert></>;
+  if (!inv) return <><div className="mb-4">{back}</div><TableSkeleton rows={4} /></>;
+
+  const reminder = reminderMessage(inv, user.name);
+  const copyReminder = async () => {
+    try { await navigator.clipboard.writeText(reminder); toast.success('Reminder copied'); }
+    catch { toast.error('Could not copy. Select the text and copy it manually.'); }
+  };
+
+  return (
+    <>
+      <div className="mb-6 flex flex-wrap items-center justify-between gap-3 print:hidden">
+        {back}
+        <div className="flex flex-wrap gap-2.5">
+          {inv.status !== 'paid' && (
+            <>
+              <Button variant="ghost" icon="fa-copy" onClick={copyReminder}>Copy reminder</Button>
+              <LinkButton href={whatsappLink(reminder)} target="_blank" rel="noopener noreferrer" variant="ghost" icon="fa-brands fa-whatsapp">
+                WhatsApp
+              </LinkButton>
+              <Button variant="ghost" icon="fa-circle-check" onClick={markPaid}>Mark as paid</Button>
+            </>
+          )}
+          <Button icon="fa-print" onClick={() => window.print()}>Print or save as PDF</Button>
+        </div>
+      </div>
+
+      <article>
+        <header className="flex flex-wrap items-start justify-between gap-4 border-b-2 border-ink pb-5">
+          <div>
+            <h1 className="font-display text-4xl font-extrabold tracking-tight">Invoice</h1>
+            <p className="text-muted">{inv.invoiceNumber}</p>
+          </div>
+          {inv.status === 'paid' ? (
+            <span className="-rotate-[8deg] animate-stamp rounded-md border-4 border-emerald-700 px-4 py-1 font-display text-3xl font-extrabold text-emerald-700">
+              PAID
+            </span>
+          ) : (
+            <StatusBadge status={inv.status} />
+          )}
+        </header>
+
+        <div className="grid gap-6 border-b border-rule py-6 sm:grid-cols-2">
+          <div>
+            <p className={label}>From</p>
+            <p className="font-semibold">{user.name}</p>
+            <p>{user.email}</p>
+          </div>
+          <div>
+            <p className={label}>Bill to</p>
+            <p className="font-semibold">{inv.client?.name}</p>
+            {inv.client?.company && <p>{inv.client.company}</p>}
+            {inv.client?.email && <p>{inv.client.email}</p>}
+            {inv.client?.phone && <p>{inv.client.phone}</p>}
+          </div>
+        </div>
+
+        <div className="grid gap-4 border-b border-rule py-6 sm:grid-cols-3">
+          <div><p className={label}>Issued</p><p>{fmtDate(inv.createdAt)}</p></div>
+          <div><p className={label}>Due</p><p>{fmtDate(inv.dueDate)}</p></div>
+          <div><p className={label}>Paid on</p><p>{inv.paidAt ? fmtDate(inv.paidAt) : '-'}</p></div>
+        </div>
+
+        <div className="grid grid-cols-[1fr_auto] gap-4 border-b border-rule py-4">
+          <div>
+            <p className="font-semibold">{inv.project?.title || 'Services'}</p>
+            {inv.project?.description && <p className="text-sm text-muted">{inv.project.description}</p>}
+          </div>
+          <span>{money(inv.amount)}</span>
+        </div>
+
+        <div className="flex items-baseline justify-between py-5">
+          <span className="text-muted">Total</span>
+          <b className="font-display text-4xl font-extrabold tracking-tight">{money(inv.amount)}</b>
+        </div>
+        <p className="text-sm text-muted">Thank you for your business.</p>
+
+        {inv.status !== 'paid' && (
+          <div className="mt-8 rounded-md border border-rule bg-white/60 p-4 print:hidden">
+            <p className="mb-1 text-sm font-semibold">Payment reminder</p>
+            <p className="text-sm text-muted">{reminder}</p>
+          </div>
+        )}
+      </article>
+    </>
+  );
+}

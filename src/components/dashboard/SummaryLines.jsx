@@ -8,7 +8,7 @@ const rows = [
 ];
 const fmt = (n) => money(Math.round(n));
 
-export default function SummaryLines({ summary }) {
+export default function SummaryLines({ summary, toInvoice = 0 }) {
   const by = (k) => summary.find((s) => s._id === k) || { total: 0, count: 0 };
   return (
     <section className="mb-9 border-t-2 border-ink">
@@ -24,6 +24,14 @@ export default function SummaryLines({ summary }) {
           </b>
         </div>
       ))}
+      <div className="grid grid-cols-[24px_1fr_auto] items-center gap-3 border-b border-rule py-3.5">
+        <i className="fa-solid fa-hourglass-half text-muted" />
+        <span>
+          Still to invoice
+          <small className="block text-sm text-muted">Unbilled budget on open projects</small>
+        </span>
+        <b className="font-display text-xl font-semibold"><CountUp value={toInvoice} format={fmt} /></b>
+      </div>
     </section>
   );
 }

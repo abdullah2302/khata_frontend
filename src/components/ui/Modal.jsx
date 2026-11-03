@@ -13,7 +13,7 @@ export default function Modal({ title, onClose, children }) {
         role="dialog"
         aria-modal="true"
         aria-label={title}
-        className="max-h-[90vh] w-full max-w-lg animate-pop overflow-auto rounded-md bg-paper p-7"
+        className="max-h-[90vh] w-full max-w-lg animate-pop overflow-auto rounded-md bg-paper p-5 sm:p-7"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="mb-4 flex items-center justify-between">

@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { getInvoices, createInvoice, updateInvoice, markInvoicePaid, deleteInvoice } from '../api/invoiceApi';
+import { getInvoices, createInvoice, updateInvoice, markInvoicePaid, duplicateInvoice, deleteInvoice } from '../api/invoiceApi';
 import useList from '../hooks/useList';
 import { useToast } from '../context/ToastContext';
 import { useAuth } from '../context/AuthContext';
@@ -50,6 +50,14 @@ export default function Invoices() {
   const copyReminder = async (invoice) => {
     try { await navigator.clipboard.writeText(reminderMessage(invoice, user.name)); toast.success('Reminder copied'); }
     catch { toast.error('Could not copy the reminder.'); }
+  };
+
+  const duplicate = async (invoice) => {
+    try {
+      const copy = await duplicateInvoice(invoice._id);
+      toast.success(`${copy.invoiceNumber} created from ${invoice.invoiceNumber}`);
+      list.reload();
+    } catch (e) { toast.error(errorMessage(e)); }
   };
 
   const remove = async (invoice) => {
@@ -120,6 +128,7 @@ export default function Invoices() {
                 </>
               )}
               <IconButton icon="fa-pen" title="Edit" onClick={() => open(i)} />
+              <IconButton icon="fa-clone" title="Duplicate" onClick={() => duplicate(i)} />
               <IconButton icon="fa-trash" title="Delete" danger onClick={() => remove(i)} />
             </>
           )}

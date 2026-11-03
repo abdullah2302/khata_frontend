@@ -38,7 +38,7 @@ export default function CommandPalette({ onClose }) {
         if (cancelled) return;
         setFound([
           ...c.items.map((x) => ({ icon: 'fa-users', label: x.name, sub: x.company || 'Client', to: `/clients/${x._id}` })),
-          ...p.items.map((x) => ({ icon: 'fa-diagram-project', label: x.title, sub: `Project, ${x.client?.name || ''}`, to: '/projects' })),
+          ...p.items.map((x) => ({ icon: 'fa-diagram-project', label: x.title, sub: `Project, ${x.client?.name || ''}`, to: `/projects/${x._id}` })),
           ...i.items.map((x) => ({ icon: 'fa-file-invoice-dollar', label: x.invoiceNumber, sub: `Invoice, ${money(x.amount)}`, to: `/invoices/${x._id}` }))
         ]);
       })

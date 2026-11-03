@@ -7,3 +7,4 @@ export const getTopClients = () => api.get('/stats/top-clients').then((r) => r.d
 export const getProjectsByStatus = () => api.get('/stats/projects-by-status').then((r) => r.data);
 export const getUpcoming = () => api.get('/stats/upcoming').then((r) => r.data);
 export const getBilledVsPaid = (year) => api.get('/stats/billed-vs-paid', { params: { year } }).then((r) => r.data);
+export const getBudgetUsage = () => api.get('/stats/budget-usage').then((r) => r.data);

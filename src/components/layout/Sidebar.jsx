@@ -26,16 +26,17 @@ export default function Sidebar() {
           <NavLink
             key={l.to}
             to={l.to}
+            aria-label={l.label}
             className={({ isActive }) => `${item} ${isActive ? 'bg-paper font-semibold text-ink hover:bg-paper' : ''}`}
           >
             <i className={`fa-solid ${l.icon} w-5 text-center`} />
-            <span>{l.label}</span>
+            <span className="max-[400px]:hidden">{l.label}</span>
           </NavLink>
         ))}
       </nav>
-      <button onClick={logout} className={item}>
+      <button onClick={logout} className={item} aria-label="Log out">
         <i className="fa-solid fa-right-from-bracket w-5 text-center" />
-        <span>Log out</span>
+        <span className="max-[400px]:hidden">Log out</span>
       </button>
     </aside>
   );

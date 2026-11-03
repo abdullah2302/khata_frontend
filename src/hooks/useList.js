@@ -30,5 +30,10 @@ export default function useList(fetcher, limit = 8) {
 
   useEffect(() => { reload(); }, [reload]);
 
+  // If the current page no longer exists (last row deleted), go back to the last page
+  useEffect(() => {
+    if (!loading && page > (data.pages || 1)) setPage(data.pages || 1);
+  }, [loading, page, data.pages]);
+
   return { ...data, page, setPage, search, setSearch, status, setStatus, sort, toggleSort, params, error, loading, reload };
 }

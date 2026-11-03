@@ -8,6 +8,7 @@ import Alert from '../components/ui/Alert';
 import EarningsChart, { MONTHS } from '../components/dashboard/EarningsChart';
 import TopClients from '../components/reports/TopClients';
 import ProjectStatusBars from '../components/reports/ProjectStatusBars';
+import BudgetUsage from '../components/reports/BudgetUsage';
 
 const fmt = (n) => money(Math.round(n));
 
@@ -69,6 +70,10 @@ export default function Reports() {
       <div className="mt-10 grid gap-10 md:grid-cols-2">
         <TopClients items={top} />
         <ProjectStatusBars items={statuses} />
+      </div>
+
+      <div className="mt-10">
+        <BudgetUsage />
       </div>
     </>
   );

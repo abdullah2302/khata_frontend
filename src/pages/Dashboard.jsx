@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react';
 import {
   getSummary, getMonthlyEarnings, getPendingByClient, getUpcoming,
-  getBilledVsPaid, getTopClients, getProjectsByStatus
+  getBilledVsPaid, getTopClients, getProjectsByStatus, getBudgetUsage
 } from '../api/statsApi';
 import { useAuth } from '../context/AuthContext';
 import PageHeader from '../components/ui/PageHeader';
@@ -18,16 +18,16 @@ import ProjectStatusBars from '../components/reports/ProjectStatusBars';
 export default function Dashboard() {
   const { user } = useAuth();
   const year = new Date().getFullYear();
-  const [d, setD] = useState({ summary: [], earnings: [], billed: [], owing: [], upcoming: [], top: [], projects: [] });
+  const [d, setD] = useState({ summary: [], earnings: [], billed: [], owing: [], upcoming: [], top: [], projects: [], toInvoice: 0 });
   const [error, setError] = useState('');
 
   useEffect(() => {
     Promise.all([
       getSummary(), getMonthlyEarnings(year), getBilledVsPaid(year), getPendingByClient(),
-      getUpcoming(), getTopClients(), getProjectsByStatus()
+      getUpcoming(), getTopClients(), getProjectsByStatus(), getBudgetUsage()
     ])
-      .then(([summary, earnings, billed, owing, upcoming, top, projects]) =>
-        setD({ summary, earnings: earnings.data, billed: billed.data, owing, upcoming, top, projects })
+      .then(([summary, earnings, billed, owing, upcoming, top, projects, budget]) =>
+        setD({ summary, earnings: earnings.data, billed: billed.data, owing, upcoming, top, projects, toInvoice: budget.toInvoice })
       )
       .catch(() => setError('Could not load your ledger. Check that the server is running.'));
   }, [year]);
@@ -37,7 +37,7 @@ export default function Dashboard() {
       <PageHeader title={`Salam, ${user.name.split(' ')[0]}`} subtitle="Here is where your money stands." />
       {error && <Alert>{error}</Alert>}
 
-      <SummaryLines summary={d.summary} />
+      <SummaryLines summary={d.summary} toInvoice={d.toInvoice} />
 
       <div className="grid gap-10 md:grid-cols-[2fr_1fr]">
         <BilledVsPaid data={d.billed} year={year} />

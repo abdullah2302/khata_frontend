@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
-import { Link, useParams } from 'react-router-dom';
-import { getInvoice, markInvoicePaid } from '../api/invoiceApi';
+import { Link, useNavigate, useParams } from 'react-router-dom';
+import { getInvoice, markInvoicePaid, duplicateInvoice } from '../api/invoiceApi';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { errorMessage, fmtDate, money } from '../utils/format';
@@ -17,6 +17,7 @@ export default function InvoiceView() {
   const { id } = useParams();
   const { user } = useAuth();
   const toast = useToast();
+  const navigate = useNavigate();
   const [inv, setInv] = useState(null);
   const [error, setError] = useState('');
 
@@ -26,6 +27,14 @@ export default function InvoiceView() {
   const markPaid = async () => {
     try { await markInvoicePaid(id); toast.success('Invoice marked as paid'); load(); }
     catch (e) { toast.error(errorMessage(e)); }
+  };
+
+  const duplicate = async () => {
+    try {
+      const copy = await duplicateInvoice(id);
+      toast.success(`${copy.invoiceNumber} created`);
+      navigate(`/invoices/${copy._id}`);
+    } catch (e) { toast.error(errorMessage(e)); }
   };
 
   const back = (
@@ -58,6 +67,7 @@ export default function InvoiceView() {
               <Button variant="ghost" icon="fa-circle-check" onClick={markPaid}>Mark as paid</Button>
             </>
           )}
+          <Button variant="ghost" icon="fa-clone" onClick={duplicate}>Duplicate</Button>
           <Button icon="fa-print" onClick={() => window.print()}>Print or save as PDF</Button>
         </div>
       </div>

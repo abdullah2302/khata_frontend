@@ -25,3 +25,18 @@ export const orDash = (v) => v || '-';
 
 export const errorMessage = (e) =>
   e.response?.data?.errors?.join(', ') || e.response?.data?.message || 'Could not reach the server.';
+
+export const round2 = (n) => Math.round((Number(n) + Number.EPSILON) * 100) / 100;
+
+// "3 days overdue", "due today", "in 5 days" for a project deadline
+export const deadlineInfo = (d) => {
+  const due = new Date(d);
+  const dueDay = Date.UTC(due.getUTCFullYear(), due.getUTCMonth(), due.getUTCDate());
+  const now = new Date();
+  const today = Date.UTC(now.getFullYear(), now.getMonth(), now.getDate());
+  const days = Math.round((dueDay - today) / 86400000);
+  if (days < 0) return { text: `${-days} ${-days === 1 ? 'day' : 'days'} overdue`, tone: 'late' };
+  if (days === 0) return { text: 'due today', tone: 'soon' };
+  if (days === 1) return { text: 'due tomorrow', tone: 'soon' };
+  return { text: `in ${days} days`, tone: days <= 3 ? 'soon' : 'ok' };
+};

@@ -38,8 +38,8 @@ export default function ProjectForm({ initial = {}, onSubmit, onCancel, error })
       <Select label="Status" value={v.status} onChange={set('status')}>
         {PROJECT_STATUSES.map((s) => <option key={s}>{s}</option>)}
       </Select>
-      <div className="grid grid-cols-2 gap-3">
-        <Input label="Budget" type="number" min="0" step="any" value={v.budget} onChange={set('budget')} />
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+        <Input label="Budget (0 means no limit)" type="number" min="0" step="any" value={v.budget} onChange={set('budget')} />
         <Input label="Deadline" type="date" value={v.deadline} onChange={set('deadline')} />
       </div>
       <Textarea label="Description" value={v.description} onChange={set('description')} />

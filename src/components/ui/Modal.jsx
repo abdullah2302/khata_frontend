@@ -18,7 +18,7 @@ export default function Modal({ title, onClose, children }) {
       >
         <div className="mb-4 flex items-center justify-between">
           <h2 className="font-display text-xl font-semibold tracking-tight">{title}</h2>
-          <button onClick={onClose} aria-label="Close" className="cursor-pointer text-muted hover:text-ink">
+          <button onClick={onClose} aria-label="Close" className="cursor-pointer text-muted hover:text-strong">
             <i className="fa-solid fa-xmark" />
           </button>
         </div>

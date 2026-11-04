@@ -9,7 +9,7 @@ export default function TopClients({ items }) {
       {items.length === 0 ? (
         <p className="py-6 text-muted">Paid invoices will show your best clients here.</p>
       ) : (
-        <div className="border-t-2 border-ink">
+        <div className="border-t-2 border-strong">
           {items.map((c, i) => (
             <BarRow key={c.clientId} label={c.clientName} value={money(c.total)} pct={(c.total / max) * 100} delay={i * 90} />
           ))}

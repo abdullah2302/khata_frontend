@@ -11,7 +11,7 @@ const fmt = (n) => money(Math.round(n));
 export default function SummaryLines({ summary, toInvoice = 0 }) {
   const by = (k) => summary.find((s) => s._id === k) || { total: 0, count: 0 };
   return (
-    <section className="mb-9 border-t-2 border-ink">
+    <section className="mb-9 border-t-2 border-strong">
       {rows.map((r) => (
         <div key={r.key} className="grid grid-cols-[24px_1fr_auto] items-center gap-3 border-b border-rule py-3.5">
           <i className={`fa-solid ${r.icon} ${r.tone}`} />

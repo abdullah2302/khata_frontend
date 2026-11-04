@@ -18,7 +18,7 @@ export default function Problem() {
             Late payments are rarely about bad clients. They happen because nobody wrote the amount down in one place.
           </p>
         </Reveal>
-        <div className="border-t-2 border-ink">
+        <div className="border-t-2 border-strong">
           {pains.map((p, i) => (
             <Reveal key={p.title} delay={i * 100} className="grid grid-cols-[32px_1fr] gap-3 border-b border-rule py-5">
               <i className={`fa-solid ${p.icon} pt-1 text-xl text-margin`} />

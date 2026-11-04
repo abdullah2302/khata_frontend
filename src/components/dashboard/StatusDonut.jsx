@@ -52,7 +52,7 @@ export default function StatusDonut({ summary }) {
           </div>
         </div>
       </div>
-      <div className="mt-4 border-t-2 border-ink">
+      <div className="mt-4 border-t-2 border-strong">
         {segs.map((s) => (
           <div key={s.key} className="grid grid-cols-[14px_1fr_auto] items-center gap-3 border-b border-rule py-2.5">
             <i className="size-3 rounded-sm" style={{ background: s.color }} />

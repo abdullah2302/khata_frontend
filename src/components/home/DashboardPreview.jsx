@@ -31,7 +31,7 @@ export default function DashboardPreview() {
   return (
     <section className="bg-ink px-2.5 py-16 md:px-7">
       <div className="mx-auto max-w-5xl">
-        <Reveal className="mb-8 px-2.5 text-paper">
+        <Reveal className="mb-8 px-2.5 text-white">
           <h2 className="font-display text-3xl font-extrabold tracking-tight">Your ledger at a glance</h2>
           <p className="mt-2 max-w-xl text-white/75">
             Invoiced against received, and where every invoice stands. The charts below use sample data.

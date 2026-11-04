@@ -5,7 +5,7 @@ import Reveal from '../ui/Reveal';
 export default function CallToAction() {
   const { user } = useAuth();
   return (
-    <section className="bg-ink text-paper">
+    <section className="bg-ink text-white">
       <Reveal className="mx-auto flex max-w-6xl flex-wrap items-center justify-between gap-6 px-5 py-14">
         <div>
           <h2 className="font-display text-3xl font-extrabold tracking-tight">Ready to open your ledger?</h2>

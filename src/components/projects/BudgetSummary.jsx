@@ -21,7 +21,7 @@ export default function BudgetSummary({ finance: f }) {
 
   return (
     <section className="mb-9">
-      <div className={`grid gap-6 border-t-2 border-ink pt-4 ${hasBudget ? 'grid-cols-2 sm:grid-cols-4' : 'grid-cols-1 sm:grid-cols-3'}`}>
+      <div className={`grid gap-6 border-t-2 border-strong pt-4 ${hasBudget ? 'grid-cols-2 sm:grid-cols-4' : 'grid-cols-1 sm:grid-cols-3'}`}>
         {stats.map(([label, value]) => (
           <div key={label}>
             <p className="text-sm text-muted">{label}</p>

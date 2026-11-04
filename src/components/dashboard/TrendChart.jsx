@@ -33,7 +33,7 @@ export default function TrendChart({ data, year }) {
           <text key={m} x={x(i)} y={H - 8} textAnchor="middle" fontSize="11" className="fill-muted">{m}</text>
         ))}
         <g key={`${year}-${max}`}>
-          <path d={area} opacity="0.08" className="animate-fade fill-ink" />
+          <path d={area} opacity="0.08" className="animate-fade fill-accent" />
           <path
             d={line}
             fill="none"
@@ -42,10 +42,10 @@ export default function TrendChart({ data, year }) {
             strokeLinecap="round"
             pathLength="1"
             strokeDasharray="1"
-            className="animate-draw stroke-ink"
+            className="animate-draw stroke-accent"
           />
           {cumulative.map((v, i) => (
-            <circle key={i} cx={x(i)} cy={y(v)} r={i === 11 ? 5 : 3} className={i === 11 ? 'fill-gold' : 'fill-ink'}>
+            <circle key={i} cx={x(i)} cy={y(v)} r={i === 11 ? 5 : 3} className={i === 11 ? 'fill-gold' : 'fill-accent'}>
               <title>{`${MONTHS[i]}: ${money(v)} so far`}</title>
             </circle>
           ))}

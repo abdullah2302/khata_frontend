@@ -4,7 +4,7 @@ import { useState } from 'react';
 export default function Accordion({ items }) {
   const [open, setOpen] = useState(0);
   return (
-    <div className="border-t-2 border-ink">
+    <div className="border-t-2 border-strong">
       {items.map((it, i) => {
         const isOpen = open === i;
         return (

@@ -20,7 +20,7 @@ import Modal from '../components/ui/Modal';
 import InvoiceForm, { INVOICE_STATUSES } from '../components/forms/InvoiceForm';
 
 export default function Invoices() {
-  const list = useList(getInvoices);
+  const list = useList('invoices', getInvoices)
   const toast = useToast();
   const { user } = useAuth();
   const [editing, setEditing] = useState(null);

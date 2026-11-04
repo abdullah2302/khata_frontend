@@ -8,12 +8,12 @@ export default function DueSoon({ items }) {
       {items.length === 0 ? (
         <p className="py-6 text-muted">No pending invoices are due soon.</p>
       ) : (
-        <div className="border-t-2 border-ink">
+        <div className="border-t-2 border-strong">
           {items.map((i, n) => (
             <Link
               key={i._id}
               to={`/invoices/${i._id}`}
-              className="grid animate-rise grid-cols-[24px_1fr_auto] items-center gap-3 border-b border-rule py-3.5 transition-colors hover:bg-white/60"
+              className="grid animate-rise grid-cols-[24px_1fr_auto] items-center gap-3 border-b border-rule py-3.5 transition-colors hover:bg-card/60"
               style={{ animationDelay: `${n * 70}ms` }}
             >
               <i className="fa-solid fa-calendar-day text-gold" />

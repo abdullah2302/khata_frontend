@@ -42,7 +42,7 @@ export default function Register() {
     <AuthLayout
       title="Open your ledger"
       subtitle="Create an account and add your first client in under a minute."
-      footer={<>Already have a ledger? <Link to="/login" className="font-semibold text-ink underline">Log in</Link></>}
+      footer={<>Already have a ledger? <Link to="/login" className="font-semibold text-strong underline">Log in</Link></>}
     >
       <form onSubmit={submit} className="grid gap-4">
         <div className="animate-rise" style={rise(200)}>

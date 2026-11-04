@@ -1,13 +1,14 @@
 import { THEMES, useTheme } from '../../context/ThemeContext';
 
-// compact: small round swatches (navbar, top bar). Otherwise: labelled cards (settings).
+// compact: small round swatches for the light themes (dark mode has its own toggle button).
+// Otherwise: labelled cards for every theme, including Dark (settings page).
 export default function ThemePicker({ compact = false }) {
   const { theme, setTheme } = useTheme();
 
   if (compact) {
     return (
-      <div role="radiogroup" aria-label="Theme" className="flex items-center gap-2">
-        {THEMES.map((t) => (
+      <div role="radiogroup" aria-label="Light theme" className="flex items-center gap-2">
+        {THEMES.filter((t) => !t.dark).map((t) => (
           <button
             key={t.id}
             role="radio"
@@ -26,7 +27,7 @@ export default function ThemePicker({ compact = false }) {
   }
 
   return (
-    <div role="radiogroup" aria-label="Theme" className="grid gap-3 sm:grid-cols-3">
+    <div role="radiogroup" aria-label="Theme" className="grid gap-3 sm:grid-cols-2 lg:grid-cols-4">
       {THEMES.map((t) => {
         const active = theme === t.id;
         return (
@@ -36,10 +37,10 @@ export default function ThemePicker({ compact = false }) {
             aria-checked={active}
             onClick={() => setTheme(t.id)}
             className={`flex cursor-pointer items-center gap-3 rounded-md border p-3 text-left transition-colors ${
-              active ? 'border-ink bg-white ring-2 ring-gold' : 'border-rule hover:bg-white/60'
+              active ? 'border-strong bg-card ring-2 ring-gold' : 'border-rule hover:bg-card/60'
             }`}
           >
-            <span className="flex h-9 w-12 overflow-hidden rounded border border-black/10" aria-hidden="true">
+            <span className="flex h-9 w-12 shrink-0 overflow-hidden rounded border border-black/10" aria-hidden="true">
               <i className="flex-1" style={{ background: t.ink }} />
               <i className="flex-1" style={{ background: t.paper }} />
               <i className="w-2" style={{ background: t.margin }} />

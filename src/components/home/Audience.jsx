@@ -22,8 +22,8 @@ export default function Audience() {
         <div className="mt-8 flex flex-wrap gap-3">
           {people.map((p, i) => (
             <Reveal key={p.label} delay={i * 70}>
-              <span className="inline-flex items-center gap-2.5 rounded-full border border-ink/20 bg-white/60 px-5 py-2.5 font-semibold transition-transform hover:-translate-y-0.5">
-                <i className={`fa-solid ${p.icon} text-ink`} />
+              <span className="inline-flex items-center gap-2.5 rounded-full border border-strong/20 bg-card/60 px-5 py-2.5 font-semibold transition-transform hover:-translate-y-0.5">
+                <i className={`fa-solid ${p.icon} text-strong`} />
                 {p.label}
               </span>
             </Reveal>

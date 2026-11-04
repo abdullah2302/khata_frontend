@@ -1,13 +1,13 @@
-import { useEffect, useState } from 'react';
-import { getClients } from '../../api/clientApi';
+import { useState } from 'react';
 import { Input, Select, Textarea } from '../ui/Fields';
 import FormActions from '../ui/FormActions';
 import Alert from '../ui/Alert';
+import { useAllClients } from '../../hooks/queries';
 
 export const PROJECT_STATUSES = ['lead', 'in-progress', 'completed', 'cancelled'];
 
 export default function ProjectForm({ initial = {}, onSubmit, onCancel, error }) {
-  const [clients, setClients] = useState([]);
+  const { data: clients = [] } = useAllClients();
   const [v, setV] = useState({
     title: initial.title || '',
     client: initial.client?._id || '',
@@ -17,8 +17,6 @@ export default function ProjectForm({ initial = {}, onSubmit, onCancel, error })
     description: initial.description || ''
   });
   const set = (k) => (e) => setV({ ...v, [k]: e.target.value });
-
-  useEffect(() => { getClients({ limit: 100 }).then((d) => setClients(d.items)); }, []);
 
   const submit = (e) => {
     e.preventDefault();

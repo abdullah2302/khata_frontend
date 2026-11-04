@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 import { getClients, createClient, updateClient, deleteClient } from '../api/clientApi';
 import useList from '../hooks/useList';
 import { useToast } from '../context/ToastContext';
-import { errorMessage, orDash } from '../utils/format';
+import { errorMessage, money, orDash } from '../utils/format';
 import PageHeader from '../components/ui/PageHeader';
 import Button, { IconButton, IconLink } from '../components/ui/Button';
 import SearchBar from '../components/ui/SearchBar';
@@ -17,7 +17,7 @@ import Modal from '../components/ui/Modal';
 import ClientForm from '../components/forms/ClientForm';
 
 export default function Clients() {
-  const list = useList(getClients);
+  const list = useList('clients', getClients);
   const toast = useToast();
   const [editing, setEditing] = useState(null); // null = closed, {} = new, client = edit
   const [formError, setFormError] = useState('');
@@ -48,7 +48,13 @@ export default function Clients() {
     },
     { label: 'Company', sortKey: 'company', render: (c) => orDash(c.company) },
     { label: 'Email', render: (c) => orDash(c.email) },
-    { label: 'Phone', render: (c) => orDash(c.phone) }
+    { label: 'Phone', render: (c) => orDash(c.phone) },
+    {
+      label: 'Owes you',
+      render: (c) => (
+        <span className={c.finance?.owed > 0 ? 'font-semibold text-margin' : 'text-muted'}>{money(c.finance?.owed)}</span>
+      )
+    }
   ];
 
   const empty = !list.loading && list.items.length === 0 && !list.error;
@@ -63,7 +69,7 @@ export default function Clients() {
               fetcher={getClients}
               params={list.params}
               filename="clients.csv"
-              map={(c) => ({ Name: c.name, Company: c.company, Email: c.email, Phone: c.phone, Notes: c.notes })}
+              map={(c) => ({ Name: c.name, Company: c.company, Email: c.email, Phone: c.phone, Billed: c.finance?.billed, 'Owes you': c.finance?.owed, Notes: c.notes })}
             />
             <Button icon="fa-plus" onClick={() => open()}>New client</Button>
           </div>

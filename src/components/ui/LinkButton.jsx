@@ -2,9 +2,9 @@ import { Link } from 'react-router-dom';
 
 const variants = {
   solid: 'bg-ink text-white hover:bg-ink-2',
-  ghost: 'border border-ink/30 text-ink hover:bg-desk',
-  light: 'bg-paper text-ink hover:bg-white',
-  outlineLight: 'border border-paper/40 text-paper hover:bg-ink-2'
+  ghost: 'border border-strong/30 text-strong hover:bg-desk',
+  light: 'bg-white text-slate-900 hover:bg-white/90',
+  outlineLight: 'border border-white/40 text-white hover:bg-white/10'
 };
 
 // Renders a router <Link> (pass `to`) or a plain anchor (pass `href`) styled as a button.

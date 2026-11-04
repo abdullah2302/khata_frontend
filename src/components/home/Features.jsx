@@ -17,10 +17,10 @@ export default function Features() {
           <h2 className="font-display text-3xl font-extrabold tracking-tight">What Khata keeps track of</h2>
           <p className="mt-2 max-w-xl text-muted">Everything a freelancer chases, in one ledger.</p>
         </Reveal>
-        <div className="mt-8 grid border-t-2 border-ink md:grid-cols-2 md:gap-x-12">
+        <div className="mt-8 grid border-t-2 border-strong md:grid-cols-2 md:gap-x-12">
           {items.map((i, n) => (
             <Reveal key={i.title} delay={(n % 2) * 90} className="grid grid-cols-[32px_1fr] gap-3 border-b border-rule py-5">
-              <i className={`fa-solid ${i.icon} pt-1 text-xl text-ink`} />
+              <i className={`fa-solid ${i.icon} pt-1 text-xl text-strong`} />
               <div>
                 <h3 className="font-display text-lg font-semibold">{i.title}</h3>
                 <p className="text-muted">{i.text}</p>

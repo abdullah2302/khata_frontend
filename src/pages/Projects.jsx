@@ -22,7 +22,7 @@ import ProjectBoard from '../components/projects/ProjectBoard';
 import ProjectForm, { PROJECT_STATUSES } from '../components/forms/ProjectForm';
 
 export default function Projects() {
-  const list = useList(getProjects);
+  const list = useList('projects', getProjects)
   const toast = useToast();
   const [editing, setEditing] = useState(null);
   const [formError, setFormError] = useState('');
@@ -101,7 +101,7 @@ export default function Projects() {
       <div className="mb-3 flex flex-wrap items-end gap-2.5">
         <SearchBar value={list.search} onChange={list.setSearch} placeholder="Search projects" />
         {view === 'list' && <StatusFilter value={list.status} onChange={list.setStatus} options={PROJECT_STATUSES} />}
-        <div className="flex overflow-hidden rounded-md border border-rule bg-white" role="group" aria-label="View">
+        <div className="flex overflow-hidden rounded-md border border-rule bg-card" role="group" aria-label="View">
           {toggle('list', 'fa-list', 'List')}
           {toggle('board', 'fa-table-columns', 'Board')}
         </div>

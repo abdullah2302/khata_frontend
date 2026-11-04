@@ -1,6 +1,6 @@
-import { useCallback, useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
-import { getInvoice, markInvoicePaid, duplicateInvoice } from '../api/invoiceApi';
+import { useQueryClient } from '@tanstack/react-query';
+import { markInvoicePaid, duplicateInvoice } from '../api/invoiceApi';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { errorMessage, fmtDate, money } from '../utils/format';
@@ -10,6 +10,7 @@ import LinkButton from '../components/ui/LinkButton';
 import StatusBadge from '../components/ui/StatusBadge';
 import TableSkeleton from '../components/ui/TableSkeleton';
 import Alert from '../components/ui/Alert';
+import { useInvoice } from '../hooks/queries';
 
 const label = 'text-sm text-muted';
 
@@ -18,11 +19,10 @@ export default function InvoiceView() {
   const { user } = useAuth();
   const toast = useToast();
   const navigate = useNavigate();
-  const [inv, setInv] = useState(null);
-  const [error, setError] = useState('');
+  const queryClient = useQueryClient();
 
-  const load = useCallback(() => getInvoice(id).then(setInv).catch((e) => setError(errorMessage(e))), [id]);
-  useEffect(() => { load(); }, [load]);
+  const { data: inv, error } = useInvoice(id);
+  const load = () => queryClient.invalidateQueries({ queryKey: ['invoice', id] });
 
   const markPaid = async () => {
     try { await markInvoicePaid(id); toast.success('Invoice marked as paid'); load(); }
@@ -38,13 +38,13 @@ export default function InvoiceView() {
   };
 
   const back = (
-    <Link to="/invoices" className="text-muted hover:text-ink">
+    <Link to="/invoices" className="text-muted hover:text-strong">
       <i className="fa-solid fa-arrow-left mr-1.5" />
       Invoices
     </Link>
   );
 
-  if (error) return <><div className="mb-4">{back}</div><Alert>{error}</Alert></>;
+  if (error) return <><div className="mb-4">{back}</div><Alert>{errorMessage(error)}</Alert></>;
   if (!inv) return <><div className="mb-4">{back}</div><TableSkeleton rows={4} /></>;
 
   const reminder = reminderMessage(inv, user.name);
@@ -73,7 +73,7 @@ export default function InvoiceView() {
       </div>
 
       <article>
-        <header className="flex flex-wrap items-start justify-between gap-4 border-b-2 border-ink pb-5">
+        <header className="flex flex-wrap items-start justify-between gap-4 border-b-2 border-strong pb-5">
           <div>
             <h1 className="font-display text-4xl font-extrabold tracking-tight">Invoice</h1>
             <p className="text-muted">{inv.invoiceNumber}</p>
@@ -123,7 +123,7 @@ export default function InvoiceView() {
         <p className="text-sm text-muted">Thank you for your business.</p>
 
         {inv.status !== 'paid' && (
-          <div className="mt-8 rounded-md border border-rule bg-white/60 p-4 print:hidden">
+          <div className="mt-8 rounded-md border border-rule bg-card/60 p-4 print:hidden">
             <p className="mb-1 text-sm font-semibold">Payment reminder</p>
             <p className="text-sm text-muted">{reminder}</p>
           </div>

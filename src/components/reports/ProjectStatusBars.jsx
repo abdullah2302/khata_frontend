@@ -16,7 +16,7 @@ export default function ProjectStatusBars({ items }) {
       {items.length === 0 ? (
         <p className="py-6 text-muted">Create a project to see the split here.</p>
       ) : (
-        <div className="border-t-2 border-ink">
+        <div className="border-t-2 border-strong">
           {items.map((s, i) => (
             <BarRow
               key={s._id}

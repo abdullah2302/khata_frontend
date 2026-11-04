@@ -35,7 +35,7 @@ export default function TaskList({ projectId, tasks, onChange }) {
         </div>
       )}
 
-      <div className="border-t-2 border-ink">
+      <div className="border-t-2 border-strong">
         {tasks.length === 0 && <p className="py-5 text-muted">No tasks yet. Break the project into small steps.</p>}
         {tasks.map((t) => (
           <div key={t._id} className="flex animate-pop items-center gap-3 border-b border-rule py-2.5">
@@ -45,7 +45,7 @@ export default function TaskList({ projectId, tasks, onChange }) {
               aria-label={`Mark "${t.title}" ${t.done ? 'not done' : 'done'}`}
               onClick={() => run(() => updateTask(projectId, t._id, { done: !t.done }))}
               className={`grid size-6 shrink-0 cursor-pointer place-items-center rounded-md border-2 transition-colors ${
-                t.done ? 'border-emerald-600 bg-emerald-600 text-white' : 'border-rule bg-white hover:border-ink'
+                t.done ? 'border-emerald-600 bg-emerald-600 text-white' : 'border-rule bg-card hover:border-strong'
               }`}
             >
               {t.done && <i className="fa-solid fa-check text-xs" />}
@@ -63,7 +63,7 @@ export default function TaskList({ projectId, tasks, onChange }) {
           maxLength={120}
           placeholder="Add a task and press Enter"
           aria-label="New task"
-          className="min-w-0 flex-1 rounded-md border border-rule bg-white px-3 py-2.5 focus:border-ink focus:outline-none focus:ring-2 focus:ring-gold/60"
+          className="min-w-0 flex-1 rounded-md border border-rule bg-card px-3 py-2.5 focus:border-strong focus:outline-none focus:ring-2 focus:ring-gold/60"
         />
         <button className="cursor-pointer rounded-md bg-ink px-4 font-semibold text-white transition-all hover:bg-ink-2 active:scale-[0.98]" aria-label="Add task">
           <i className="fa-solid fa-plus" />

@@ -1,5 +1,5 @@
 const base =
-  'w-full rounded-md border border-rule bg-white px-3 py-2.5 focus:border-ink focus:outline-none focus:ring-2 focus:ring-gold/60 disabled:bg-desk/50';
+  'w-full rounded-md border border-rule bg-card px-3 py-2.5 focus:border-strong focus:outline-none focus:ring-2 focus:ring-gold/60 disabled:bg-desk/50';
 
 export const Input = ({ label, ...props }) => (
   <label className="grid gap-1 text-sm font-medium">
@@ -23,7 +23,7 @@ export const Select = ({ label, children, ...props }) => (
 );
 
 export const IconInput = ({ icon, ...props }) => (
-  <label className="flex items-center gap-2.5 rounded-md border border-rule bg-white px-3 focus-within:border-ink focus-within:ring-2 focus-within:ring-gold/60">
+  <label className="flex items-center gap-2.5 rounded-md border border-rule bg-card px-3 focus-within:border-strong focus-within:ring-2 focus-within:ring-gold/60">
     <i className={`fa-solid ${icon} text-muted`} />
     <input {...props} className="min-w-0 flex-1 bg-transparent py-3 outline-none" />
   </label>

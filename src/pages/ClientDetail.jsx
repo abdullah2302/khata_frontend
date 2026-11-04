@@ -1,12 +1,11 @@
-import { useEffect, useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { getClientOverview } from '../api/clientApi';
 import { errorMessage, fmtDate, money } from '../utils/format';
 import PageHeader from '../components/ui/PageHeader';
 import StatusBadge from '../components/ui/StatusBadge';
 import CountUp from '../components/ui/CountUp';
 import TableSkeleton from '../components/ui/TableSkeleton';
 import Alert from '../components/ui/Alert';
+import { useClientOverview } from '../hooks/queries';
 
 const fmt = (n) => money(Math.round(n));
 const h2 = 'mb-3 font-display text-xl font-semibold tracking-tight';
@@ -14,21 +13,16 @@ const row = 'grid animate-rise items-center gap-3 border-b border-rule py-3.5';
 
 export default function ClientDetail() {
   const { id } = useParams();
-  const [data, setData] = useState(null);
-  const [error, setError] = useState('');
-
-  useEffect(() => {
-    getClientOverview(id).then(setData).catch((e) => setError(errorMessage(e)));
-  }, [id]);
+  const { data, error } = useClientOverview(id);
 
   const back = (
-    <Link to="/clients" className="mb-4 inline-block text-muted hover:text-ink">
+    <Link to="/clients" className="mb-4 inline-block text-muted hover:text-strong">
       <i className="fa-solid fa-arrow-left mr-1.5" />
       Clients
     </Link>
   );
 
-  if (error) return <>{back}<Alert>{error}</Alert></>;
+  if (error) return <>{back}<Alert>{errorMessage(error)}</Alert></>;
   if (!data) return <>{back}<TableSkeleton rows={4} /></>;
 
   const { client, projects, invoices, totals } = data;
@@ -43,7 +37,7 @@ export default function ClientDetail() {
       {back}
       <PageHeader title={client.name} subtitle={client.company} />
 
-      <div className="mb-8 grid gap-6 border-t-2 border-ink pt-4 sm:grid-cols-3">
+      <div className="mb-8 grid gap-6 border-t-2 border-strong pt-4 sm:grid-cols-3">
         {stats.map((s) => (
           <div key={s.label}>
             <p className="text-sm text-muted">{s.label}</p>
@@ -56,7 +50,7 @@ export default function ClientDetail() {
 
       <section className="mb-9">
         <h2 className={h2}>Contact</h2>
-        <div className="border-t-2 border-ink">
+        <div className="border-t-2 border-strong">
           <div className={`${row} grid-cols-[24px_1fr]`}>
             <i className="fa-solid fa-envelope text-muted" />
             {client.email ? <a href={`mailto:${client.email}`} className="hover:underline">{client.email}</a> : <span className="text-muted">No email</span>}
@@ -77,7 +71,7 @@ export default function ClientDetail() {
       <div className="grid gap-10 md:grid-cols-2">
         <section>
           <h2 className={h2}>Projects ({projects.length})</h2>
-          <div className="border-t-2 border-ink">
+          <div className="border-t-2 border-strong">
             {projects.length === 0 && <p className="py-6 text-muted">No projects yet.</p>}
             {projects.map((p, i) => (
               <div key={p._id} className={`${row} grid-cols-[1fr_auto]`} style={{ animationDelay: `${i * 60}ms` }}>
@@ -93,13 +87,13 @@ export default function ClientDetail() {
 
         <section>
           <h2 className={h2}>Invoices ({invoices.length})</h2>
-          <div className="border-t-2 border-ink">
+          <div className="border-t-2 border-strong">
             {invoices.length === 0 && <p className="py-6 text-muted">No invoices yet.</p>}
             {invoices.map((inv, i) => (
               <Link
                 key={inv._id}
                 to={`/invoices/${inv._id}`}
-                className={`${row} grid-cols-[1fr_auto] transition-colors hover:bg-white/60`}
+                className={`${row} grid-cols-[1fr_auto] transition-colors hover:bg-card/60`}
                 style={{ animationDelay: `${i * 60}ms` }}
               >
                 <span>

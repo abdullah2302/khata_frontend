@@ -11,7 +11,7 @@ export default function Principles() {
   return (
     <div className="mt-10 grid gap-x-8 gap-y-8 sm:grid-cols-2 lg:grid-cols-4">
       {items.map((p, i) => (
-        <Reveal key={p.title} delay={i * 90} className="border-t-2 border-ink pt-4">
+        <Reveal key={p.title} delay={i * 90} className="border-t-2 border-strong pt-4">
           <i className={`fa-solid ${p.icon} text-2xl`} />
           <h3 className="mt-3 font-display text-lg font-semibold">{p.title}</h3>
           <p className="text-muted">{p.text}</p>

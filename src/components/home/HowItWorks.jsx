@@ -14,7 +14,7 @@ export default function HowItWorks() {
         <Reveal>
           <h2 className="font-display text-3xl font-extrabold tracking-tight">From first client to paid invoice</h2>
         </Reveal>
-        <ol className="mt-8 border-t-2 border-ink">
+        <ol className="mt-8 border-t-2 border-strong">
           {steps.map((s, i) => (
             <Reveal key={s.title} delay={i * 90}>
               <li className="grid grid-cols-[40px_1fr] items-baseline gap-x-4 gap-y-1 border-b border-rule py-5 md:grid-cols-[40px_240px_1fr]">

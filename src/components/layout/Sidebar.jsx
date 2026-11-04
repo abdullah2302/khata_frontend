@@ -27,7 +27,7 @@ export default function Sidebar() {
             key={l.to}
             to={l.to}
             aria-label={l.label}
-            className={({ isActive }) => `${item} ${isActive ? 'bg-paper font-semibold text-ink hover:bg-paper' : ''}`}
+            className={({ isActive }) => `${item} ${isActive ? 'bg-paper font-semibold text-strong hover:bg-paper' : ''}`}
           >
             <i className={`fa-solid ${l.icon} w-5 text-center`} />
             <span className="max-[400px]:hidden">{l.label}</span>

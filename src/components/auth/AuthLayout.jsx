@@ -24,7 +24,7 @@ function Slips() {
         <p className="mb-2 text-xs text-muted">Earned this year</p>
         <div className="flex h-14 items-end gap-1.5">
           {[30, 55, 40, 75, 60, 95].map((h, i) => (
-            <span key={i} className="w-full origin-bottom animate-grow rounded-t bg-ink" style={{ height: `${h}%`, animationDelay: `${600 + i * 90}ms` }} />
+            <span key={i} className="w-full origin-bottom animate-grow rounded-t bg-accent" style={{ height: `${h}%`, animationDelay: `${600 + i * 90}ms` }} />
           ))}
         </div>
       </div>
@@ -78,7 +78,7 @@ export default function AuthLayout({ title, subtitle, children, footer }) {
       <main className="relative grid content-center bg-paper px-6 py-10 sm:px-12 lg:px-[min(8vw,96px)]">
         <div className="absolute inset-y-0 left-[min(5vw,40px)] hidden w-0.5 bg-margin/70 sm:block" />
         <div className="mx-auto w-full max-w-md">
-          <Link to="/" className="mb-6 hidden animate-rise text-sm text-muted hover:text-ink lg:inline-block">
+          <Link to="/" className="mb-6 hidden animate-rise text-sm text-muted hover:text-strong lg:inline-block">
             <i className="fa-solid fa-arrow-left mr-1.5" />
             Back to home
           </Link>

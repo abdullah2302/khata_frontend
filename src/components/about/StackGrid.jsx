@@ -14,8 +14,8 @@ export default function StackGrid() {
     <div className="grid grid-cols-2 gap-4 sm:grid-cols-3">
       {stack.map((s, i) => (
         <Reveal key={s.name} delay={(i % 3) * 90}>
-          <div className="h-full rounded-md border border-rule bg-white/60 p-5 transition-all hover:-translate-y-1 hover:shadow-md">
-            <i className={`${s.icon} text-3xl text-ink`} />
+          <div className="h-full rounded-md border border-rule bg-card/60 p-5 transition-all hover:-translate-y-1 hover:shadow-md">
+            <i className={`${s.icon} text-3xl text-strong`} />
             <p className="mt-3 font-display text-lg font-semibold">{s.name}</p>
             <p className="text-sm text-muted">{s.role}</p>
           </div>

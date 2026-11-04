@@ -22,7 +22,7 @@ const iconBase =
 
 export function IconButton({ icon, title, danger, ...props }) {
   return (
-    <button {...props} title={title} aria-label={title} className={`${iconBase} ${danger ? 'hover:text-margin' : 'hover:text-ink'}`}>
+    <button {...props} title={title} aria-label={title} className={`${iconBase} ${danger ? 'hover:text-margin' : 'hover:text-strong'}`}>
       <i className={`fa-solid ${icon}`} />
     </button>
   );
@@ -30,7 +30,7 @@ export function IconButton({ icon, title, danger, ...props }) {
 
 export function IconLink({ to, icon, title }) {
   return (
-    <Link to={to} title={title} aria-label={title} className={`${iconBase} hover:text-ink`}>
+    <Link to={to} title={title} aria-label={title} className={`${iconBase} hover:text-strong`}>
       <i className={`fa-solid ${icon}`} />
     </Link>
   );

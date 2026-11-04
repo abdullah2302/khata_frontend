@@ -3,6 +3,7 @@ import { Link, NavLink } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import LinkButton from '../ui/LinkButton';
 import ThemePicker from '../ui/ThemePicker';
+import ThemeToggle from '../ui/ThemeToggle';
 
 const links = [
   { to: '/', label: 'Home', end: true },
@@ -13,7 +14,7 @@ const links = [
 
 const linkClass = ({ isActive }) =>
   `border-b-2 py-1 transition-colors ${
-    isActive ? 'border-gold font-semibold text-ink' : 'border-transparent text-muted hover:text-ink'
+    isActive ? 'border-gold font-semibold text-strong' : 'border-transparent text-muted hover:text-strong'
   }`;
 
 export default function Navbar() {
@@ -25,15 +26,15 @@ export default function Navbar() {
     <LinkButton to="/dashboard" icon="fa-book-open" onClick={close}>Open ledger</LinkButton>
   ) : (
     <>
-      <Link to="/login" onClick={close} className="font-semibold text-ink hover:underline">Log in</Link>
+      <Link to="/login" onClick={close} className="font-semibold text-strong hover:underline">Log in</Link>
       <LinkButton to="/register" onClick={close}>Create account</LinkButton>
     </>
   );
 
   return (
-    <header className="sticky top-0 z-20 border-b-2 border-ink bg-paper">
+    <header className="sticky top-0 z-20 border-b-2 border-strong bg-paper">
       <div className="mx-auto flex max-w-6xl items-center justify-between px-5 py-3">
-        <Link to="/" onClick={close} className="flex items-center gap-2.5 font-display text-2xl font-extrabold tracking-tight text-ink">
+        <Link to="/" onClick={close} className="flex items-center gap-2.5 font-display text-2xl font-extrabold tracking-tight text-strong">
           <i className="fa-solid fa-book-bookmark text-gold" />
           Khata
         </Link>
@@ -44,13 +45,14 @@ export default function Navbar() {
           ))}
         </nav>
 
-        <div className="hidden items-center gap-5 md:flex">
+          <div className="hidden items-center gap-5 md:flex">
+          <ThemeToggle />
           <ThemePicker compact />
           {actions}
         </div>
 
         <button
-          className="cursor-pointer text-xl text-ink md:hidden"
+          className="cursor-pointer text-xl text-strong md:hidden"
           aria-label="Menu"
           aria-expanded={open}
           onClick={() => setOpen(!open)}

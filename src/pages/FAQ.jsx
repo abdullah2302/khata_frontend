@@ -14,7 +14,7 @@ export default function FAQ() {
         <h1 className="font-display text-5xl font-extrabold tracking-tight">Questions</h1>
         <p className="mt-3 text-muted">Short answers about how Khata works.</p>
 
-        <label className="mt-6 flex items-center gap-2.5 border-b-2 border-ink py-2 focus-within:border-gold">
+        <label className="mt-6 flex items-center gap-2.5 border-b-2 border-strong py-2 focus-within:border-gold">
           <i className="fa-solid fa-magnifying-glass text-muted" />
           <input
             value={q}
@@ -39,7 +39,7 @@ export default function FAQ() {
         {shown.length ? (
           <Accordion key={term} items={shown} />
         ) : (
-          <p className="border-t-2 border-ink py-8 text-muted">No questions match "{q.trim()}". Try a shorter word.</p>
+          <p className="border-t-2 border-strong py-8 text-muted">No questions match "{q.trim()}". Try a shorter word.</p>
         )}
       </div>
     </section>

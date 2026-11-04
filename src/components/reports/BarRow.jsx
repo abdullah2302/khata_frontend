@@ -1,4 +1,4 @@
-export default function BarRow({ label, value, pct, color = 'bg-ink', delay = 0 }) {
+export default function BarRow({ label, value, pct, color = 'bg-accent', delay = 0 }) {
   return (
     <div className="border-b border-rule py-3">
       <div className="mb-1.5 flex items-center justify-between gap-3">

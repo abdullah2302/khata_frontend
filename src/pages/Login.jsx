@@ -37,7 +37,7 @@ export default function Login() {
     <AuthLayout
       title="Welcome back"
       subtitle="Log in to see who still owes you."
-      footer={<>New here? <Link to="/register" className="font-semibold text-ink underline">Create an account</Link></>}
+      footer={<>New here? <Link to="/register" className="font-semibold text-strong underline">Create an account</Link></>}
     >
       <form onSubmit={submit} className="grid gap-4">
         <div className="animate-rise" style={rise(200)}>

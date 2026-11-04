@@ -74,7 +74,7 @@ export default function ProjectBoard({ search }) {
               <h3 className="mb-3 flex items-center gap-2 font-display font-semibold">
                 <i className={`fa-solid ${col.icon} text-muted`} />
                 {col.label}
-                <span className="ml-auto rounded-full bg-white/70 px-2 text-sm text-muted">{items.length}</span>
+                <span className="ml-auto rounded-full bg-card/70 px-2 text-sm text-muted">{items.length}</span>
               </h3>
 
               <div className="grid gap-3">
@@ -84,7 +84,7 @@ export default function ProjectBoard({ search }) {
                     key={p._id}
                     draggable
                     onDragStart={(e) => { e.dataTransfer.setData('text/plain', p._id); e.dataTransfer.effectAllowed = 'move'; }}
-                    className="animate-pop cursor-grab rounded-md border border-rule bg-white p-3.5 shadow-sm transition-shadow hover:shadow-md active:cursor-grabbing"
+                    className="animate-pop cursor-grab rounded-md border border-rule bg-card p-3.5 shadow-sm transition-shadow hover:shadow-md active:cursor-grabbing"
                   >
                     <Link to={`/projects/${p._id}`} className="font-semibold hover:underline">{p.title}</Link>
                     <p className="text-sm text-muted">{p.client?.name}</p>
@@ -103,7 +103,7 @@ export default function ProjectBoard({ search }) {
                         value={p.status}
                         onChange={(e) => move(p, e.target.value)}
                         aria-label={`Move ${p.title}`}
-                        className="rounded-md border border-rule bg-white px-1.5 py-1 text-xs"
+                        className="rounded-md border border-rule bg-card px-1.5 py-1 text-xs"
                       >
                         {columns.map((c) => <option key={c.id} value={c.id}>{c.label}</option>)}
                       </select>

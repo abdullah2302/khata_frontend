@@ -1,13 +1,11 @@
-import { useEffect, useState } from 'react';
 import { Link } from 'react-router-dom';
-import { getBudgetUsage } from '../../api/statsApi';
+import { useBudgetUsage } from '../../hooks/useStats';
 import StatusBadge from '../ui/StatusBadge';
 import BudgetBar from '../projects/BudgetBar';
 
 // Budget vs invoiced for the projects with the biggest budgets.
 export default function BudgetUsage() {
-  const [items, setItems] = useState([]);
-  useEffect(() => { getBudgetUsage().then((d) => setItems(d.items)).catch(() => {}); }, []);
+  const items = useBudgetUsage().data?.items ?? [];
 
   return (
     <section>
@@ -15,12 +13,12 @@ export default function BudgetUsage() {
       {items.length === 0 ? (
         <p className="py-6 text-muted">Add a budget to a project to see how much of it has been invoiced.</p>
       ) : (
-        <div className="border-t-2 border-ink">
+        <div className="border-t-2 border-strong">
           {items.map((i, n) => (
             <Link
               key={i.projectId}
               to={`/projects/${i.projectId}`}
-              className="block animate-rise border-b border-rule py-3.5 transition-colors hover:bg-white/60"
+              className="block animate-rise border-b border-rule py-3.5 transition-colors hover:bg-card/60"
               style={{ animationDelay: `${n * 60}ms` }}
             >
               <div className="mb-2 flex items-center justify-between gap-3">

@@ -1,10 +1,12 @@
 import { createContext, useContext, useState } from 'react';
+import { useQueryClient } from '@tanstack/react-query';
 import { loginUser, registerUser } from '../api/authApi';
 
 const AuthContext = createContext();
 export const useAuth = () => useContext(AuthContext);
 
 export function AuthProvider({ children }) {
+  const queryClient = useQueryClient();
   const [user, setUser] = useState(() => JSON.parse(localStorage.getItem('user') || 'null'));
 
   const updateUser = (next) => {
@@ -12,6 +14,7 @@ export function AuthProvider({ children }) {
     setUser(next);
   };
   const save = ({ token, user }) => {
+    queryClient.clear(); // never show another account's cached data
     localStorage.setItem('token', token);
     updateUser(user);
   };
@@ -21,6 +24,7 @@ export function AuthProvider({ children }) {
   const logout = () => {
     localStorage.removeItem('token');
     localStorage.removeItem('user');
+    queryClient.clear();
     setUser(null);
   };
 

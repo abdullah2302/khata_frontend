@@ -91,7 +91,7 @@ export default function InvoiceForm({ initial = {}, onSubmit, onCancel, error })
                   key={s}
                   type="button"
                   onClick={() => setV({ ...v, amount: round2((available * s) / 100) })}
-                  className="cursor-pointer rounded-full border border-ink/25 bg-white px-3 py-0.5 font-semibold transition-colors hover:bg-ink hover:text-white"
+                  className="cursor-pointer rounded-full border border-strong/25 bg-card px-3 py-0.5 font-semibold transition-colors hover:bg-ink hover:text-white"
                 >
                   {s === 100 ? 'All' : `${s}%`}
                 </button>

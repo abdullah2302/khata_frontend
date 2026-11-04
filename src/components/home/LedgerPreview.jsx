@@ -23,7 +23,7 @@ export default function LedgerPreview() {
       className="relative rounded-sm bg-paper py-8 pr-7 pl-16 shadow-[0_1px_0_var(--color-rule),0_18px_40px_-20px_color-mix(in_oklab,var(--color-ink)_55%,transparent)] before:absolute before:inset-y-0 before:left-10 before:w-0.5 before:bg-margin/70 before:content-[''] max-md:pl-14 md:rotate-[1.2deg]"
     >
       <p className="mb-3 text-sm text-muted">Sample ledger</p>
-      <div className="border-t-2 border-ink">
+      <div className="border-t-2 border-strong">
         {rows.map((r, i) => (
           <div key={r.label} className={line} style={{ animationDelay: `${300 + i * 120}ms` }}>
             <i className={`fa-solid ${r.icon} ${r.tone}`} />

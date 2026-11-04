@@ -47,7 +47,7 @@ export default function Contact() {
         <h1 className="animate-rise font-display text-5xl font-extrabold tracking-tight">Contact</h1>
         <p className="mt-3 max-w-md text-lg text-muted">Questions, feedback or a bug to report? Write to us and we will reply by email.</p>
 
-        <div className="mt-8 border-t-2 border-ink">
+        <div className="mt-8 border-t-2 border-strong">
           {tips.map((t, i) => (
             <div
               key={t.title}
@@ -63,7 +63,7 @@ export default function Contact() {
           ))}
         </div>
         <p className="mt-6 text-muted">
-          Looking for a quick answer first? Try the <Link to="/faq" className="font-semibold text-ink underline">questions page</Link>.
+          Looking for a quick answer first? Try the <Link to="/faq" className="font-semibold text-strong underline">questions page</Link>.
         </p>
       </div>
 

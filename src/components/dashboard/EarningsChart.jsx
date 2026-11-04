@@ -8,11 +8,11 @@ export default function EarningsChart({ data, year }) {
   return (
     <section>
       <h2 className="mb-3 font-display text-xl font-semibold tracking-tight">Earned each month in {year}</h2>
-      <div className="flex h-48 gap-1.5 border-b-2 border-ink">
+      <div className="flex h-48 gap-1.5 border-b-2 border-strong">
         {series.map((s, i) => (
           <div key={`${year}-${s.m}`} className="flex h-full flex-1 items-end" title={`${s.m}: ${money(s.total)}`}>
             <span
-              className="min-h-[3px] w-full origin-bottom animate-grow rounded-t-[3px] bg-ink"
+              className="min-h-[3px] w-full origin-bottom animate-grow rounded-t-[3px] bg-accent"
               style={{ height: `${(s.total / max) * 100}%`, animationDelay: `${i * 45}ms` }}
             />
           </div>

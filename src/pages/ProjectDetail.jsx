@@ -1,6 +1,7 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useState } from 'react';
 import { Link, useParams } from 'react-router-dom';
-import { getProject, updateProject, setProjectStatus } from '../api/projectApi';
+import { useQueryClient } from '@tanstack/react-query';
+import { updateProject, setProjectStatus } from '../api/projectApi';
 import { createInvoice } from '../api/invoiceApi';
 import { useToast } from '../context/ToastContext';
 import { errorMessage, fmtDate, money } from '../utils/format';
@@ -15,28 +16,28 @@ import DeadlineBadge from '../components/projects/DeadlineBadge';
 import TaskList from '../components/projects/TaskList';
 import InvoiceForm from '../components/forms/InvoiceForm';
 import ProjectForm, { PROJECT_STATUSES } from '../components/forms/ProjectForm';
+import { useProject } from '../hooks/queries';
 
 export default function ProjectDetail() {
   const { id } = useParams();
   const toast = useToast();
-  const [project, setProject] = useState(null);
-  const [error, setError] = useState('');
+  const queryClient = useQueryClient();
   const [modal, setModal] = useState(null); // 'invoice' | 'edit' | null
   const [formError, setFormError] = useState('');
 
-  const load = useCallback(() => getProject(id).then(setProject).catch((e) => setError(errorMessage(e))), [id]);
-  useEffect(() => { load(); }, [load]);
+  const { data: project, error } = useProject(id);
+  const load = () => queryClient.invalidateQueries({ queryKey: ['project', id] });
 
   const open = (name) => { setFormError(''); setModal(name); };
 
   const back = (
-    <Link to="/projects" className="mb-4 inline-block text-muted hover:text-ink">
+    <Link to="/projects" className="mb-4 inline-block text-muted hover:text-strong">
       <i className="fa-solid fa-arrow-left mr-1.5" />
       Projects
     </Link>
   );
 
-  if (error) return <>{back}<Alert>{error}</Alert></>;
+  if (error) return <>{back}<Alert>{errorMessage(error)}</Alert></>;
   if (!project) return <>{back}<TableSkeleton rows={4} /></>;
 
   const f = project.finance;
@@ -86,7 +87,7 @@ export default function ProjectDetail() {
       <div className="mb-8 flex flex-wrap items-center gap-x-8 gap-y-3 text-sm">
         <label className="flex items-center gap-2">
           <span className="text-muted">Status</span>
-          <select value={project.status} onChange={(e) => changeStatus(e.target.value)} className="rounded-md border border-rule bg-white px-2 py-1.5">
+          <select value={project.status} onChange={(e) => changeStatus(e.target.value)} className="rounded-md border border-rule bg-card px-2 py-1.5">
             {PROJECT_STATUSES.map((s) => <option key={s}>{s}</option>)}
           </select>
         </label>
@@ -99,17 +100,21 @@ export default function ProjectDetail() {
       <BudgetSummary finance={f} />
 
       <div className="grid gap-10 lg:grid-cols-2">
-        <TaskList projectId={project._id} tasks={project.tasks || []} onChange={(tasks) => setProject((p) => ({ ...p, tasks }))} />
+        <TaskList
+          projectId={project._id}
+          tasks={project.tasks || []}
+          onChange={(tasks) => queryClient.setQueryData(['project', id], (p) => ({ ...p, tasks }))}
+        />
 
         <section>
           <h2 className="mb-3 font-display text-xl font-semibold tracking-tight">Invoices ({project.invoices.length})</h2>
-          <div className="border-t-2 border-ink">
+          <div className="border-t-2 border-strong">
             {project.invoices.length === 0 && <p className="py-5 text-muted">No invoices yet. Use New invoice to bill this project.</p>}
             {project.invoices.map((inv, i) => (
               <Link
                 key={inv._id}
                 to={`/invoices/${inv._id}`}
-                className="flex animate-rise items-center justify-between gap-3 border-b border-rule py-3.5 transition-colors hover:bg-white/60"
+                className="flex animate-rise items-center justify-between gap-3 border-b border-rule py-3.5 transition-colors hover:bg-card/60"
                 style={{ animationDelay: `${i * 60}ms` }}
               >
                 <span className="min-w-0">

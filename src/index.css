@@ -6,10 +6,13 @@
   --font-sans: 'Figtree', system-ui, sans-serif;
   --font-urdu: 'Noto Naskh Arabic', serif;
 
-  --color-ink: #14213d;
+  --color-ink: #14213d; /* dark brand surfaces: sidebar, buttons, footer */
   --color-ink-2: #22345f;
-  --color-paper: #fcfbf7;
-  --color-desk: #e4e9f3;
+  --color-strong: #14213d; /* headings, links and rules drawn on the page */
+  --color-accent: #14213d; /* chart bars and lines */
+  --color-paper: #fcfbf7; /* sheets and panels */
+  --color-card: #ffffff; /* inputs and cards */
+  --color-desk: #e4e9f3; /* page background */
   --color-rule: #c3cfe6;
   --color-margin: #d9453c;
   --color-gold: #f0a500;
@@ -54,6 +57,8 @@
 :root[data-theme='ledger'] {
   --color-ink: #123b34;
   --color-ink-2: #1c5248;
+  --color-strong: #123b34;
+  --color-accent: #123b34;
   --color-paper: #f6f8f0;
   --color-desk: #dce5d6;
   --color-rule: #c6d3c2;
@@ -66,6 +71,8 @@
 :root[data-theme='plum'] {
   --color-ink: #2d1b4e;
   --color-ink-2: #45306d;
+  --color-strong: #2d1b4e;
+  --color-accent: #2d1b4e;
   --color-paper: #fbf8fd;
   --color-desk: #e9e1f2;
   --color-rule: #d2c5e3;
@@ -73,6 +80,58 @@
   --color-gold: #f2b01e;
   --color-muted: #6a5d80;
   --color-body: #231537;
+}
+
+:root[data-theme='dark'] {
+  color-scheme: dark;
+  --color-ink: #2c3e75;
+  --color-ink-2: #3a4f94;
+  --color-strong: #e7ebf5;
+  --color-accent: #7f9bff;
+  --color-paper: #151b2b;
+  --color-card: #1c2336;
+  --color-desk: #0c111d;
+  --color-rule: #2b3550;
+  --color-margin: #ff6b61;
+  --color-gold: #f5b73d;
+  --color-muted: #9aa6c0;
+  --color-body: #e7ebf5;
+
+  /* pastel status colours (badges, alerts) re-tuned for a dark background */
+  --color-red-100: #3a1d1f;
+  --color-red-800: #fecaca;
+  --color-emerald-100: #12332a;
+  --color-emerald-800: #a7f3d0;
+  --color-emerald-700: #34d399;
+  --color-amber-100: #3a2e12;
+  --color-amber-900: #fde68a;
+  --color-amber-700: #fbbf24;
+  --color-sky-100: #12303f;
+  --color-sky-900: #bae6fd;
+}
+
+/* Printed invoices always use light colours, whatever theme is on screen */
+@media print {
+  :root[data-theme] {
+    --color-paper: #fff;
+    --color-card: #fff;
+    --color-desk: #fff;
+    --color-body: #141c33;
+    --color-strong: #141c33;
+    --color-muted: #566280;
+    --color-rule: #c3cfe6;
+    --color-accent: #14213d;
+    --color-emerald-700: #047857;
+    --color-red-100: #fee2e2;
+    --color-red-800: #991b1b;
+    --color-emerald-100: #d1fae5;
+    --color-emerald-800: #065f46;
+    --color-amber-100: #fef3c7;
+    --color-amber-900: #78350f;
+    --color-amber-700: #b45309;
+    --color-sky-100: #e0f2fe;
+    --color-sky-900: #0c4a6e;
+  }
 }
 
 @layer base {

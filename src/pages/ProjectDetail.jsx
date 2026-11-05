@@ -43,7 +43,7 @@ export default function ProjectDetail() {
   const f = project.finance;
   const fullyInvoiced = f.budget > 0 && f.remaining <= 0;
   // The new invoice starts with the price set to what is still free in the budget
-  const invoiceDefaults = { client: project.client, project: { _id: project._id }, amount: f.remaining > 0 ? f.remaining : '' };
+const invoiceDefaults = { project: { _id: project._id } };
 
   const saveInvoice = async (values) => {
     try {
@@ -77,7 +77,7 @@ export default function ProjectDetail() {
         action={
           <div className="flex flex-wrap gap-2.5">
             <Button variant="ghost" icon="fa-pen" onClick={() => open('edit')}>Edit</Button>
-            <Button icon="fa-file-invoice-dollar" onClick={() => open('invoice')} disabled={fullyInvoiced} title={fullyInvoiced ? 'The budget is fully invoiced' : undefined}>
+            <Button icon="fa-file-invoice-dollar" onClick={() => open('invoice')} disabled={fullyInvoiced} title={fullyInvoiced ? 'The full price is already invoiced' : undefined}>
               New invoice
             </Button>
           </div>
@@ -119,7 +119,7 @@ export default function ProjectDetail() {
               >
                 <span className="min-w-0">
                   <span className="font-semibold">{inv.invoiceNumber}</span>
-                  <small className="block text-sm text-muted">Due {fmtDate(inv.dueDate)}</small>
+                  <small className="block text-sm text-muted">Due {fmtDate(inv.dueDate)}{inv.percent ? `, ${inv.percent}% of the price` : ''}</small>
                 </span>
                 <span className="flex shrink-0 items-center gap-3">
                   <StatusBadge status={inv.status} />

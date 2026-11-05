@@ -1,9 +1,9 @@
-import { Link, useNavigate, useParams } from 'react-router-dom';
+import { Link,  useParams } from 'react-router-dom';
 import { useQueryClient } from '@tanstack/react-query';
-import { markInvoicePaid, duplicateInvoice } from '../api/invoiceApi';
+import { markInvoicePaid } from '../api/invoiceApi';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
-import { errorMessage, fmtDate, money } from '../utils/format';
+import { errorMessage, fmtDate, money,round2  } from '../utils/format';
 import { reminderMessage, whatsappLink } from '../utils/reminder';
 import Button from '../components/ui/Button';
 import LinkButton from '../components/ui/LinkButton';
@@ -18,7 +18,7 @@ export default function InvoiceView() {
   const { id } = useParams();
   const { user } = useAuth();
   const toast = useToast();
-  const navigate = useNavigate();
+ 
   const queryClient = useQueryClient();
 
   const { data: inv, error } = useInvoice(id);
@@ -29,14 +29,7 @@ export default function InvoiceView() {
     catch (e) { toast.error(errorMessage(e)); }
   };
 
-  const duplicate = async () => {
-    try {
-      const copy = await duplicateInvoice(id);
-      toast.success(`${copy.invoiceNumber} created`);
-      navigate(`/invoices/${copy._id}`);
-    } catch (e) { toast.error(errorMessage(e)); }
-  };
-
+  
   const back = (
     <Link to="/invoices" className="text-muted hover:text-strong">
       <i className="fa-solid fa-arrow-left mr-1.5" />
@@ -67,7 +60,7 @@ export default function InvoiceView() {
               <Button variant="ghost" icon="fa-circle-check" onClick={markPaid}>Mark as paid</Button>
             </>
           )}
-          <Button variant="ghost" icon="fa-clone" onClick={duplicate}>Duplicate</Button>
+         
           <Button icon="fa-print" onClick={() => window.print()}>Print or save as PDF</Button>
         </div>
       </div>
@@ -111,6 +104,7 @@ export default function InvoiceView() {
         <div className="grid grid-cols-[1fr_auto] gap-4 border-b border-rule py-4">
           <div>
             <p className="font-semibold">{inv.project?.title || 'Services'}</p>
+            {inv.percent ? <p className="text-sm text-muted">{inv.percent}% of the project price</p> : null}
             {inv.project?.description && <p className="text-sm text-muted">{inv.project.description}</p>}
           </div>
           <span>{money(inv.amount)}</span>
@@ -121,7 +115,28 @@ export default function InvoiceView() {
           <b className="font-display text-4xl font-extrabold tracking-tight">{money(inv.amount)}</b>
         </div>
         <p className="text-sm text-muted">Thank you for your business.</p>
+        
+        {inv.projectFinance?.budget > 0 && (
+          <div className="mb-5 grid gap-1.5 rounded-md border border-rule p-4 text-sm">
+            <p className="mb-1 font-semibold">Project balance</p>
+            <div className="flex justify-between gap-3"><span className="text-muted">Project price</span><b>{money(inv.projectFinance.budget)}</b></div>
+            <div className="flex justify-between gap-3"><span className="text-muted">Paid so far</span><b>{money(inv.projectFinance.paid)}</b></div>
+            {inv.status !== 'paid' && (
+              <div className="flex justify-between gap-3"><span className="text-muted">This invoice (not paid yet)</span><b>{money(inv.amount)}</b></div>
+            )}
+            <div className="mt-1 flex items-baseline justify-between gap-3 border-t border-rule pt-2.5">
+              <span className="font-semibold">{inv.status === 'paid' ? 'Remaining to pay' : 'Remaining after this invoice is paid'}</span>
+              <b className="font-display text-2xl">
+                {money(inv.status === 'paid' ? inv.projectFinance.balance : round2(inv.projectFinance.balance - inv.amount))}
+              </b>
+            </div>
+            {(inv.status === 'paid' ? inv.projectFinance.balance : round2(inv.projectFinance.balance - inv.amount)) <= 0 && (
+              <p className="text-emerald-700">The project is fully paid.</p>
+            )}
+          </div>
+        )}
 
+        <p className="text-sm text-muted">Thank you for your business.</p>
         {inv.status !== 'paid' && (
           <div className="mt-8 rounded-md border border-rule bg-card/60 p-4 print:hidden">
             <p className="mb-1 text-sm font-semibold">Payment reminder</p>

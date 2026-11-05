@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { getInvoices, createInvoice, updateInvoice, markInvoicePaid, duplicateInvoice, deleteInvoice } from '../api/invoiceApi';
+import { getInvoices, createInvoice, updateInvoice, markInvoicePaid, deleteInvoice } from '../api/invoiceApi';
 import useList from '../hooks/useList';
 import { useToast } from '../context/ToastContext';
 import { useAuth } from '../context/AuthContext';
@@ -52,13 +52,7 @@ export default function Invoices() {
     catch { toast.error('Could not copy the reminder.'); }
   };
 
-  const duplicate = async (invoice) => {
-    try {
-      const copy = await duplicateInvoice(invoice._id);
-      toast.success(`${copy.invoiceNumber} created from ${invoice.invoiceNumber}`);
-      list.reload();
-    } catch (e) { toast.error(errorMessage(e)); }
-  };
+  
 
   const remove = async (invoice) => {
     if (!window.confirm(`Delete invoice ${invoice.invoiceNumber}?`)) return;
@@ -70,7 +64,21 @@ export default function Invoices() {
     { label: 'Invoice', sortKey: 'invoiceNumber', render: (i) => <span className="font-semibold">{i.invoiceNumber}</span> },
     { label: 'Client', render: (i) => i.client?.name || '-' },
     { label: 'Project', render: (i) => i.project?.title || '-' },
-    { label: 'Amount', sortKey: 'amount', render: (i) => money(i.amount) },
+    {
+      label: 'Amount',
+      sortKey: 'amount',
+      render: (i) => (
+        <>
+          {money(i.amount)}
+          {i.percent ? <small className="block text-xs text-muted">{i.percent}% of the project</small> : null}
+           {i.status === 'paid' && i.projectBalance != null && (
+            <small className="block text-xs text-muted">
+              {i.projectBalance > 0 ? `${money(i.projectBalance)} still to pay on the project` : 'Project fully paid'}
+            </small>
+          )}
+        </>
+      )
+    },
     { label: 'Status', sortKey: 'status', render: (i) => <StatusBadge status={i.status} /> },
     { label: 'Due', sortKey: 'dueDate', render: (i) => fmtDate(i.dueDate) }
   ];
@@ -128,7 +136,7 @@ export default function Invoices() {
                 </>
               )}
               <IconButton icon="fa-pen" title="Edit" onClick={() => open(i)} />
-              <IconButton icon="fa-clone" title="Duplicate" onClick={() => duplicate(i)} />
+            
               <IconButton icon="fa-trash" title="Delete" danger onClick={() => remove(i)} />
             </>
           )}

@@ -3,7 +3,11 @@ export const CURRENCIES = [
   { symbol: 'Rs ', label: 'Pakistani Rupee (Rs)' },
   { symbol: '€', label: 'Euro (€)' },
   { symbol: '£', label: 'British Pound (£)' },
-  { symbol: 'AED ', label: 'UAE Dirham (AED)' }
+  { symbol: 'AED ', label: 'UAE Dirham (AED)' },
+  { symbol: '₹', label: 'Indian Rupee (₹)' },
+  { symbol: '₱', label: 'Philippine Peso (₱)' },
+  { symbol: '₩', label: 'South Korean Won (₩)' },
+  { symbol: '¥', label: 'Japanese Yen (¥)' }
 ];
 
 export const getCurrency = () => localStorage.getItem('currency') ?? '$';

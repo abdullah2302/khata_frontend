@@ -8,7 +8,7 @@ export default function BudgetSummary({ finance: f }) {
   const hasBudget = f.budget > 0;
   const stats = hasBudget
     ? [
-        ['Budget', f.budget],
+        ['Project price', f.budget],
         ['Invoiced', f.invoiced],
         ['Paid', f.paid],
         ['Still to invoice', Math.max(f.remaining, 0)]
@@ -45,10 +45,10 @@ export default function BudgetSummary({ finance: f }) {
 
       <p className="mt-4 max-w-2xl text-sm text-muted">
         {!hasBudget
-          ? 'This project has no budget, so invoices can be any amount. Add a budget to track how much is left to invoice.'
+          ? 'This project has no price yet. Edit the project and add its price before creating invoices.'
           : f.remaining > 0
-            ? `Every invoice on this project counts against the budget. You can invoice up to ${money(f.remaining)} more.`
-            : 'The budget is fully invoiced. Raise the budget if there is more work to bill.'}
+            ? `Invoices for this project are created from its price. ${money(f.remaining)} is still left to invoice.`
+            : 'The full price has been invoiced. Raise the project price if there is more work to bill.'}
       </p>
     </section>
   );

@@ -57,7 +57,7 @@ export default function Projects() {
     },
     { label: 'Client', render: (p) => p.client?.name || '-' },
     { label: 'Status', sortKey: 'status', render: (p) => <StatusBadge status={p.status} /> },
-    { label: 'Budget used', sortKey: 'budget', render: (p) => <BudgetBar finance={p.finance} compact /> },
+    { label: 'Price invoiced', sortKey: 'budget', render: (p) => <BudgetBar finance={p.finance} compact /> },
     { label: 'Deadline', sortKey: 'deadline', render: (p) => <DeadlineBadge date={p.deadline} status={p.status} /> }
   ];
 

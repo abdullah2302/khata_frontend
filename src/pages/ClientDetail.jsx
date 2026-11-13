@@ -6,6 +6,7 @@ import CountUp from '../components/ui/CountUp';
 import TableSkeleton from '../components/ui/TableSkeleton';
 import Alert from '../components/ui/Alert';
 import { useClientOverview } from '../hooks/queries';
+import ClientBrief from '../components/clients/ClientBrief';
 
 const fmt = (n) => money(Math.round(n));
 const h2 = 'mb-3 font-display text-xl font-semibold tracking-tight';
@@ -67,7 +68,7 @@ export default function ClientDetail() {
           )}
         </div>
       </section>
-
+       <ClientBrief client={client} />
       <div className="grid gap-10 md:grid-cols-2">
         <section>
           <h2 className={h2}>Projects ({projects.length})</h2>

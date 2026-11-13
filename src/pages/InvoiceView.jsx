@@ -4,13 +4,14 @@ import { markInvoicePaid } from '../api/invoiceApi';
 import { useAuth } from '../context/AuthContext';
 import { useToast } from '../context/ToastContext';
 import { errorMessage, fmtDate, money,round2  } from '../utils/format';
-import { reminderMessage, whatsappLink } from '../utils/reminder';
+import ReminderWriter from '../components/invoices/ReminderWriter';
 import Button from '../components/ui/Button';
-import LinkButton from '../components/ui/LinkButton';
+
 import StatusBadge from '../components/ui/StatusBadge';
 import TableSkeleton from '../components/ui/TableSkeleton';
 import Alert from '../components/ui/Alert';
 import { useInvoice } from '../hooks/queries';
+
 
 const label = 'text-sm text-muted';
 
@@ -40,11 +41,7 @@ export default function InvoiceView() {
   if (error) return <><div className="mb-4">{back}</div><Alert>{errorMessage(error)}</Alert></>;
   if (!inv) return <><div className="mb-4">{back}</div><TableSkeleton rows={4} /></>;
 
-  const reminder = reminderMessage(inv, user.name);
-  const copyReminder = async () => {
-    try { await navigator.clipboard.writeText(reminder); toast.success('Reminder copied'); }
-    catch { toast.error('Could not copy. Select the text and copy it manually.'); }
-  };
+ 
 
   return (
     <>
@@ -52,13 +49,7 @@ export default function InvoiceView() {
         {back}
         <div className="flex flex-wrap gap-2.5">
           {inv.status !== 'paid' && (
-            <>
-              <Button variant="ghost" icon="fa-copy" onClick={copyReminder}>Copy reminder</Button>
-              <LinkButton href={whatsappLink(reminder)} target="_blank" rel="noopener noreferrer" variant="ghost" icon="fa-brands fa-whatsapp">
-                WhatsApp
-              </LinkButton>
-              <Button variant="ghost" icon="fa-circle-check" onClick={markPaid}>Mark as paid</Button>
-            </>
+            <Button variant="ghost" icon="fa-circle-check" onClick={markPaid}>Mark as paid</Button>
           )}
          
           <Button icon="fa-print" onClick={() => window.print()}>Print or save as PDF</Button>
@@ -137,12 +128,7 @@ export default function InvoiceView() {
         )}
 
         <p className="text-sm text-muted">Thank you for your business.</p>
-        {inv.status !== 'paid' && (
-          <div className="mt-8 rounded-md border border-rule bg-card/60 p-4 print:hidden">
-            <p className="mb-1 text-sm font-semibold">Payment reminder</p>
-            <p className="text-sm text-muted">{reminder}</p>
-          </div>
-        )}
+        {inv.status !== 'paid' && <ReminderWriter invoice={inv} />}
       </article>
     </>
   );
